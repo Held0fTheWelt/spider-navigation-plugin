@@ -916,7 +916,7 @@ void USpiderNavigationBuilderWidget::SaveGridAsync()
     SPIDER_LOG(LogTemp, Log, TEXT("SaveGridAsync() called. NavPoints=%d"), NavPoints.Num());
     if (NavPoints.Num() == 0)return;
 
-    Async(EAsyncExecution::Thread, [this]()
+    Async(EAsyncExecution::TaskGraphMainThread, [this]()
         {
             TMap<int32, FVector>Locs, Norms; TMap<int32, FSpiderNavRelations>Rel;
             for (int32 i = 0; i < NavPoints.Num(); ++i)
@@ -934,7 +934,7 @@ void USpiderNavigationBuilderWidget::SaveGridAsync()
                 }
                 Rel.Add(i, R);
             }
-            AsyncTask(ENamedThreads::GameThread, [Locs, Norms, Rel]()
+            Async(EAsyncExecution::Thread, [Locs, Norms, Rel]()
                 {
                     USpiderNavGridSaveGame* S = Cast<USpiderNavGridSaveGame>(
                         UGameplayStatics::CreateSaveGameObject(USpiderNavGridSaveGame::StaticClass()));
@@ -957,12 +957,27 @@ void USpiderNavigationBuilderWidget::SaveGridAsync()
 // ------------------------------------------------------------------------------------------------------------
 // GetNavPointIndex
 // ------------------------------------------------------------------------------------------------------------
-int32 USpiderNavigationBuilderWidget::GetNavPointIndex(ASpiderNavPoint* N)
+int32 USpiderNavigationBuilderWidget::GetNavPointIndex(ASpiderNavPoint* NavPoint)
 {
+    if (!NavPoint)
+        return -1;
+
     for (int32 i = 0; i < NavPoints.Num(); ++i)
-        if (NavPoints[i] == N)return i;
+    {
+        const TWeakObjectPtr<ASpiderNavPoint>& WeakNavPoint = NavPoints[i];
+
+        // WeakPtr muss gültig sein, sonst überspringen
+        if (!WeakNavPoint.IsValid())
+            continue;
+
+        if (WeakNavPoint.Get() == NavPoint)
+        {
+            return i;
+        }
+    }
     return -1;
 }
+
 
 
 
