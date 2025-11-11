@@ -11,13 +11,8 @@ Navigation grid builds on floors, walls, ceilings.
 
 ### To build grid
 
-1. Scene filled up with special actors `Tracer` in specified volume with specified step.
-2. From each tracer plugin traces to the nearest WorldStatic.
-3. At point of the hit it spawns actor `NavPoint` with some offset.
-4. From each `NavPoint` plugin check sphere collision with the othe nearest `NavPoint`.
-5. Checks visibility between these two actors. If they are visible to each other - add connection. If not - add to the list of pissible neighbors.
-6. Iterates the list of pissible neighbors and traces in 6 directions from each of two points for possible connection through an edge. 
-Checks visibility between points of intersection. If a point of intersection is visible to each of two points - add a new point `NavPointEdge` and connections between them.
+1. Use Editor Utility Script EUW_SpiderNavGridBuilder to generate Grid.
+2. Set BP_SpiderNavigationGameState As GameState to let NavGridComponent be added to GameState via GameFeatures.
 
 ### To find path
 * Plugin implements A* to find path. Can return a normal to each navigation point.
@@ -39,21 +34,19 @@ Plugin contains auxiliary blueprints for movement on this grid:
 
 1. Close your project in UE4
 2. Download plugin sources
-3. Copy it into your project in `Project` folder. Make sure the path `./Plugins/SpiderNavigation/SpiderNavigation.uplugin` is correct.
+3. Copy it into your project in `Project` folder. Make sure the path `./Plugins/GameFeatures/SpiderNavigation/SpiderNavigation.uplugin` is correct.
 4. Rebuild your project. If you have non-c++ project, then add in the editor one empty c++ class and then rebuild project in VS.
 5. Run project. Be sure that SpiderNavigation plugin is enabled in Editor's Plugins menu.
 6. Switch on the view option in the `Content` panel `View Options` (bottom right corner) to show plugin content.
 7. Click on `Choose a path` - a small button to left of Content path with icon of open folder. Choose `SpiderNavigation Content`.
-8. Add `DebugSpiderNavigationBP`, `DebugSpiderNavGridBuilderBP`, `SpiderPawn` on the scene.
-9. Adjust the size of the `DebugSpiderNavGridBuilderBP` to match size of your level.
-10. For `DebugSpiderNavigationBP` scene instance choose `Input`->`Auto Receive Input`: `Player 0` to enable hotkeys of navaigation.
-11. Click on `Play`. Press `R` button to rebuild navigation grid. Press `Q` button to show navigation grid.
+8. Add `BP_NavGridBuilderVolume`, `SpiderPawn` on the scene.
+9. Adjust the size of the `BuilderVolume` to match size of your level.
+10. Set BP_LevelScriptActor as LevelScriptActor to make use of Debug with 'Q'
+11. Click on `Play`. Press `Q` button to show navigation grid.
 
 Plugin autosaves navigation grid. Try to click `Stop` and `Play` again. `Spider` pawn should follow you.
 
 Here is a video guide:
-
-[![Video guide](https://img.youtube.com/vi/ayobvtejDKg/0.jpg)](https://www.youtube.com/watch?v=ayobvtejDKg)
 
 
 ## Configuration
