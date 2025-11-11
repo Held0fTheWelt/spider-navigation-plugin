@@ -1,4 +1,4 @@
-# Spider Navigation Plugin For Unreal Engine 4
+# Spider Navigation Plugin For Unreal Engine 5
 
 It implements custom navigation system suitable for spiders.
 Navigation grid builds on floors, walls, ceilings.
