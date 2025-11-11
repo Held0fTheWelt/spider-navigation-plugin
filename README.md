@@ -12,7 +12,6 @@ Navigation grid builds on floors, walls, ceilings.
 ### To build grid
 
 1. Use Editor Utility Script EUW_SpiderNavGridBuilder to generate Grid.
-2. Set BP_SpiderNavigationGameState As GameState to let NavGridComponent be added to GameState via GameFeatures.
 
 ### To find path
 * Plugin implements A* to find path. Can return a normal to each navigation point.
@@ -40,9 +39,10 @@ Plugin contains auxiliary blueprints for movement on this grid:
 6. Switch on the view option in the `Content` panel `View Options` (bottom right corner) to show plugin content.
 7. Click on `Choose a path` - a small button to left of Content path with icon of open folder. Choose `SpiderNavigation Content`.
 8. Add `BP_NavGridBuilderVolume`, `SpiderPawn` on the scene.
-9. Adjust the size of the `BuilderVolume` to match size of your level.
-10. Set BP_LevelScriptActor as LevelScriptActor to make use of Debug with 'Q'
-11. Click on `Play`. Press `Q` button to show navigation grid.
+9. Set BP_SpiderNavigationGameState As GameState to let NavGridComponent be added to GameState via GameFeatures.
+10. Adjust the size of the `BuilderVolume` to match size of your level.
+11. Set BP_LevelScriptActor as LevelScriptActor to make use of Debug with 'Q'
+12. Click on `Play`. Press `Q` button to show navigation grid.
 
 Plugin autosaves navigation grid. Try to click `Stop` and `Play` again. `Spider` pawn should follow you.
 
